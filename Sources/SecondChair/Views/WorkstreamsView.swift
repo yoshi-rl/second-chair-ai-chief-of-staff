@@ -25,6 +25,7 @@ struct WorkstreamsView: View {
             .frame(maxWidth: 1040)
             .frame(maxWidth: .infinity)
         }
+        .background(Brand.background)
     }
 }
 
@@ -37,16 +38,16 @@ private struct WorkstreamCard: View {
             HStack {
                 Image(systemName: workstream.systemImage)
                     .font(.title2)
-                    .foregroundStyle(Brand.blue)
+                    .foregroundStyle(Brand.accent)
                     .frame(width: 34, height: 34)
-                    .background(Brand.blue.opacity(0.12), in: RoundedRectangle(cornerRadius: 9))
+                    .background(Brand.accent.opacity(0.09), in: RoundedRectangle(cornerRadius: 9))
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(workstream.title)
                         .font(.headline)
                     Text("\(items.count) active item\(items.count == 1 ? "" : "s")")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Brand.secondary)
                 }
 
                 Spacer()
@@ -55,7 +56,7 @@ private struct WorkstreamCard: View {
             if items.isEmpty {
                 Text("No prepared work yet.")
                     .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Brand.secondary)
             } else {
                 ForEach(items) { item in
                     HStack(alignment: .top, spacing: 10) {
@@ -69,7 +70,7 @@ private struct WorkstreamCard: View {
                                 .lineLimit(1)
                             Text(item.status.title)
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Brand.secondary)
                         }
                     }
                 }
@@ -77,10 +78,6 @@ private struct WorkstreamCard: View {
         }
         .frame(maxWidth: .infinity, minHeight: 155, alignment: .topLeading)
         .padding(18)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(.quaternary)
-        }
+        .executiveCard()
     }
 }
