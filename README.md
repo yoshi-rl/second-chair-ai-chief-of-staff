@@ -7,12 +7,14 @@ Second Chair is a human-guided AI chief-of-staff prototype for founders. This fo
 The SwiftUI app includes:
 
 - a daily operating brief;
-- a persistent human approval queue;
+- separately persisted brief, approval, and decision records;
+- a persistent human approval queue with required decision rationale;
+- an append-only audit history for approved, held, returned, and rejected work;
 - business workstreams across lead generation, sales, marketing, operations, finance, and people;
 - an executive brief for decisions and exceptions;
 - a transparent connector map that distinguishes sandbox demonstrations from roadmap-only integrations.
 
-The current build uses local sample data. It does not send messages, launch ads, update marketplaces, move money, or mutate live CRM data.
+Manus-waiting and connector actions are protected states: they require an explicit human decision and cannot be auto-approved. The current build uses local sample data. It does not send messages, launch ads, update marketplaces, move money, or mutate live CRM data.
 
 ### Design language
 
