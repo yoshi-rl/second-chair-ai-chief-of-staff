@@ -15,16 +15,16 @@ struct ExecutiveBriefView: View {
                     Text("LOCAL SAMPLE")
                         .font(.caption2.bold())
                         .tracking(1)
-                        .foregroundStyle(Brand.blue)
+                        .foregroundStyle(Brand.accent)
                         .padding(.horizontal, 9)
                         .padding(.vertical, 5)
-                        .background(Brand.blue.opacity(0.12), in: Capsule())
+                        .background(Brand.accent.opacity(0.09), in: Capsule())
                 }
 
                 BriefSection(
                     title: "Decisions needed",
                     systemImage: "hand.raised",
-                    color: Brand.coral,
+                    color: Brand.accent,
                     items: decisionItems
                 )
 
@@ -38,7 +38,7 @@ struct ExecutiveBriefView: View {
                 BriefSection(
                     title: "Next moves",
                     systemImage: "arrow.right.circle",
-                    color: Brand.blue,
+                    color: Brand.accent,
                     items: [
                         "Review the four prepared drafts before any external action is considered.",
                         "Assign owners to the two invoice exceptions before month end.",
@@ -48,13 +48,14 @@ struct ExecutiveBriefView: View {
 
                 Text("Second Chair is currently a local workflow prototype. It does not send messages, launch ads, update marketplaces, move money, or mutate live CRM data.")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Brand.secondary)
                     .padding(.top, 4)
             }
             .padding(28)
             .frame(maxWidth: 880)
             .frame(maxWidth: .infinity)
         }
+        .background(Brand.background)
     }
 
     private var decisionItems: [String] {
@@ -98,10 +99,6 @@ private struct BriefSection: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(.quaternary)
-        }
+        .executiveCard()
     }
 }
