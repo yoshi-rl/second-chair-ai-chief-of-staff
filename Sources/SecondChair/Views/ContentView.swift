@@ -18,8 +18,11 @@ struct ContentView: View {
         } detail: {
             detail
                 .navigationTitle(currentSection.title)
+                .background(Brand.background)
         }
         .navigationSplitViewStyle(.balanced)
+        .tint(Brand.accent)
+        .foregroundStyle(Brand.primary)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
