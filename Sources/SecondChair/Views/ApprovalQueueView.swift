@@ -52,6 +52,7 @@ struct ApprovalQueueView: View {
                 }
             }
         }
+        .background(Brand.background)
     }
 
     private var filteredItems: [WorkItem] {
@@ -88,7 +89,7 @@ private struct ApprovalCard: View {
             HStack(alignment: .top) {
                 Label(item.workstream.title, systemImage: item.workstream.systemImage)
                     .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Brand.secondary)
 
                 Spacer()
                 StatusPill(status: item.status)
@@ -98,7 +99,7 @@ private struct ApprovalCard: View {
                 Text(item.title)
                     .font(.title3.bold())
                 Text(item.summary)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Brand.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
@@ -118,7 +119,7 @@ private struct ApprovalCard: View {
                         store.approve(item.id)
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(Brand.blue)
+                    .tint(Brand.accent)
                 } else {
                     Button("Return to Review") {
                         store.returnToReview(item.id)
@@ -128,11 +129,7 @@ private struct ApprovalCard: View {
             .font(.caption)
         }
         .padding(18)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(.quaternary)
-        }
+        .executiveCard()
         .contextMenu {
             if item.status == .ready {
                 Button("Approve") { store.approve(item.id) }
