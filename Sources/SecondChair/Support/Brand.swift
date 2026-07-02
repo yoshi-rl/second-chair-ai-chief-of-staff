@@ -17,6 +17,7 @@ extension WorkStatus {
         case .ready: Brand.accent
         case .approved: Brand.success
         case .held: Brand.secondary
+        case .rejected: Color(red: 185.0 / 255.0, green: 28.0 / 255.0, blue: 28.0 / 255.0)
         }
     }
 }
