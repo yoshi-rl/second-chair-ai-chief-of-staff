@@ -17,10 +17,15 @@ struct SecondChairApp: App {
         .commands {
             CommandMenu("Work") {
                 Button("Approve Next Ready Item") {
-                    store.approveNext()
+                    store.requestNextApprovalDecision()
                 }
                 .keyboardShortcut("a", modifiers: [.command, .shift])
                 .disabled(store.readyItems.isEmpty)
+
+                Button("Save Brief Version") {
+                    store.saveBriefVersion()
+                }
+                .keyboardShortcut("b", modifiers: [.command, .shift])
 
                 Button("Restore Sample Workspace") {
                     store.resetSampleData()
