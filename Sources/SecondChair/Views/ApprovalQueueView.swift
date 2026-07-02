@@ -5,6 +5,7 @@ struct ApprovalQueueView: View {
         case review = "Needs Review"
         case held = "On Hold"
         case approved = "Approved"
+        case rejected = "Rejected"
 
         var id: String { rawValue }
     }
@@ -26,7 +27,7 @@ struct ApprovalQueueView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .frame(maxWidth: 460)
+                .frame(maxWidth: 620)
             }
             .padding(24)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -60,6 +61,7 @@ struct ApprovalQueueView: View {
         case .review: store.readyItems
         case .held: store.heldItems
         case .approved: store.approvedItems
+        case .rejected: store.rejectedItems
         }
     }
 
@@ -68,6 +70,7 @@ struct ApprovalQueueView: View {
         case .review: "You’re caught up"
         case .held: "Nothing is on hold"
         case .approved: "No approvals yet"
+        case .rejected: "No rejected actions"
         }
     }
 
@@ -76,6 +79,7 @@ struct ApprovalQueueView: View {
         case .review: "New prepared work will appear here for review."
         case .held: "Items you pause will stay here until you return them to review."
         case .approved: "Approved drafts are recorded here in the local workspace."
+        case .rejected: "Rejected actions remain visible in the audit history."
         }
     }
 }
@@ -108,21 +112,32 @@ private struct ApprovalCard: View {
                 Text("•")
                 Label(item.source, systemImage: "shippingbox")
 
+                if let approval = store.approvalRecord(for: item.id),
+                   approval.kind.isProtected {
+                    Text("•")
+                    Label(approval.kind.title, systemImage: approval.kind.systemImage)
+                        .foregroundStyle(Brand.accent)
+                }
+
                 Spacer()
 
                 if item.status == .ready {
                     Button("Hold") {
-                        store.hold(item.id)
+                        store.requestDecision(item.id, targetState: .held)
+                    }
+
+                    Button("Reject") {
+                        store.requestDecision(item.id, targetState: .rejected)
                     }
 
                     Button("Approve") {
-                        store.approve(item.id)
+                        store.requestDecision(item.id, targetState: .approved)
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(Brand.accent)
                 } else {
                     Button("Return to Review") {
-                        store.returnToReview(item.id)
+                        store.requestDecision(item.id, targetState: .ready)
                     }
                 }
             }
@@ -132,10 +147,19 @@ private struct ApprovalCard: View {
         .executiveCard()
         .contextMenu {
             if item.status == .ready {
-                Button("Approve") { store.approve(item.id) }
-                Button("Hold") { store.hold(item.id) }
+                Button("Approve") {
+                    store.requestDecision(item.id, targetState: .approved)
+                }
+                Button("Hold") {
+                    store.requestDecision(item.id, targetState: .held)
+                }
+                Button("Reject") {
+                    store.requestDecision(item.id, targetState: .rejected)
+                }
             } else {
-                Button("Return to Review") { store.returnToReview(item.id) }
+                Button("Return to Review") {
+                    store.requestDecision(item.id, targetState: .ready)
+                }
             }
         }
     }
