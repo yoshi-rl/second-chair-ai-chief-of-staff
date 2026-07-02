@@ -38,6 +38,7 @@ enum WorkStatus: String, Codable {
     case ready
     case approved
     case held
+    case rejected
 
     var title: String {
         switch self {
@@ -45,6 +46,7 @@ enum WorkStatus: String, Codable {
         case .ready: "Ready for review"
         case .approved: "Approved"
         case .held: "On hold"
+        case .rejected: "Rejected"
         }
     }
 
@@ -54,6 +56,7 @@ enum WorkStatus: String, Codable {
         case .ready: "eye"
         case .approved: "checkmark.circle.fill"
         case .held: "pause.circle.fill"
+        case .rejected: "xmark.circle.fill"
         }
     }
 }
