@@ -23,16 +23,16 @@ struct ConnectorsView: View {
                 HStack(alignment: .top, spacing: 12) {
                     Image(systemName: "lock.shield")
                         .font(.title2)
-                        .foregroundStyle(Brand.mint)
+                        .foregroundStyle(Brand.success)
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Safe by default")
                             .font(.headline)
                         Text("All connectors are read-only demonstrations in this build. No live credentials or external mutations are configured.")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Brand.secondary)
                     }
                 }
                 .padding(18)
-                .background(Brand.mint.opacity(0.10), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .background(Brand.success.opacity(0.08), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
 
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 16) {
                     ForEach(connectors) { connector in
@@ -44,6 +44,7 @@ struct ConnectorsView: View {
             .frame(maxWidth: 1040)
             .frame(maxWidth: .infinity)
         }
+        .background(Brand.background)
     }
 }
 
@@ -54,8 +55,8 @@ private struct Connector: Identifiable {
 
         var color: Color {
             switch self {
-            case .sandbox: Brand.blue
-            case .roadmap: .secondary
+            case .sandbox: Brand.accent
+            case .roadmap: Brand.secondary
             }
         }
     }
@@ -85,14 +86,10 @@ private struct ConnectorCard: View {
                 .font(.headline)
             Text(connector.detail)
                 .font(.callout)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Brand.secondary)
         }
         .frame(maxWidth: .infinity, minHeight: 110, alignment: .topLeading)
         .padding(18)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(.quaternary)
-        }
+        .executiveCard()
     }
 }
