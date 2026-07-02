@@ -13,19 +13,19 @@ struct TodayView: View {
                         label: "Time-back target",
                         value: "10–15h",
                         detail: "Validation target per week",
-                        color: Brand.blue
+                        color: Brand.accent
                     )
                     MetricCard(
                         label: "Ready",
                         value: "\(store.readyItems.count)",
                         detail: "Drafts waiting for you",
-                        color: Brand.coral
+                        color: Brand.primary
                     )
                     MetricCard(
                         label: "Live actions",
                         value: "0",
                         detail: "Nothing moves without approval",
-                        color: Brand.mint
+                        color: Brand.success
                     )
                 }
 
@@ -43,16 +43,13 @@ struct TodayView: View {
                         }
                     }
                 }
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(.quaternary)
-                }
+                .executiveCard()
             }
             .padding(28)
             .frame(maxWidth: 1040)
             .frame(maxWidth: .infinity)
         }
+        .background(Brand.background)
     }
 
     private var hero: some View {
@@ -60,7 +57,7 @@ struct TodayView: View {
             VStack(alignment: .leading, spacing: 12) {
                 Text(Date.now, format: .dateTime.weekday(.wide).month(.wide).day())
                     .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Brand.secondary)
                     .textCase(.uppercase)
                     .tracking(1)
 
@@ -69,7 +66,7 @@ struct TodayView: View {
 
                 Text("Second Chair has assembled the work that needs judgment today. Review the drafts, hold what is uncertain, and approve only what is ready.")
                     .font(.title3)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Brand.secondary)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: 680, alignment: .leading)
             }
@@ -80,25 +77,24 @@ struct TodayView: View {
                 StatusPill(status: store.readyItems.isEmpty ? .approved : .ready)
                 Text("Local workspace")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Brand.secondary)
             }
         }
         .padding(24)
-        .background(
-            LinearGradient(
-                colors: [Brand.blue.opacity(0.13), Brand.coral.opacity(0.08)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ),
-            in: RoundedRectangle(cornerRadius: 18, style: .continuous)
-        )
+        .executiveCard(cornerRadius: 18)
+        .overlay(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 2)
+                .fill(Brand.accent)
+                .frame(width: 4)
+                .padding(.vertical, 20)
+        }
     }
 
     private func timelineRow(_ item: WorkItem) -> some View {
         HStack(alignment: .top, spacing: 14) {
             Text(item.scheduledTime)
                 .font(.callout.monospacedDigit())
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Brand.secondary)
                 .frame(width: 50, alignment: .leading)
 
             Image(systemName: item.workstream.systemImage)
@@ -110,7 +106,7 @@ struct TodayView: View {
                     .font(.headline)
                 Text(item.summary)
                     .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Brand.secondary)
                     .lineLimit(2)
             }
 
