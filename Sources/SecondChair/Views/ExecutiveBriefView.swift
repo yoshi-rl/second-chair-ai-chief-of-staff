@@ -12,13 +12,40 @@ struct ExecutiveBriefView: View {
                         subtitle: "A compact view of decisions, exceptions, and the next operating moves."
                     )
                     Spacer()
-                    Text("LOCAL SAMPLE")
-                        .font(.caption2.bold())
-                        .tracking(1)
-                        .foregroundStyle(Brand.accent)
-                        .padding(.horizontal, 9)
-                        .padding(.vertical, 5)
-                        .background(Brand.accent.opacity(0.09), in: Capsule())
+                    VStack(alignment: .trailing, spacing: 8) {
+                        if let brief = store.latestBrief {
+                            Text("VERSION \(brief.version)")
+                                .font(.caption2.bold())
+                                .tracking(1)
+                                .foregroundStyle(Brand.accent)
+                                .padding(.horizontal, 9)
+                                .padding(.vertical, 5)
+                                .background(Brand.accent.opacity(0.09), in: Capsule())
+                            Text(brief.createdAt.formatted(date: .abbreviated, time: .shortened))
+                                .font(.caption)
+                                .foregroundStyle(Brand.secondary)
+                        }
+
+                        Button("Save Version") {
+                            store.saveBriefVersion()
+                        }
+                    }
+                }
+
+                if let brief = store.latestBrief {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(brief.summary)
+                            .font(.headline)
+                        Label(
+                            brief.sourceContext.joined(separator: " • "),
+                            systemImage: "shippingbox"
+                        )
+                        .font(.caption)
+                        .foregroundStyle(Brand.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(16)
+                    .executiveCard(cornerRadius: 12)
                 }
 
                 BriefSection(
