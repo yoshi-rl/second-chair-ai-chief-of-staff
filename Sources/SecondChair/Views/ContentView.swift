@@ -27,9 +27,13 @@ struct ContentView: View {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Button("Approve Next Ready Item") {
-                        store.approveNext()
+                        store.requestNextApprovalDecision()
                     }
                     .disabled(store.readyItems.isEmpty)
+
+                    Button("Save Brief Version") {
+                        store.saveBriefVersion()
+                    }
 
                     Divider()
 
@@ -41,6 +45,28 @@ struct ContentView: View {
                 }
             }
         }
+        .sheet(item: pendingDecision) { request in
+            if let item = store.items.first(where: { $0.id == request.workItemID }),
+               let approval = store.approvalRecord(for: request.workItemID) {
+                ApprovalDecisionSheet(
+                    request: request,
+                    item: item,
+                    approval: approval,
+                    store: store
+                )
+            }
+        }
+    }
+
+    private var pendingDecision: Binding<ApprovalDecisionRequest?> {
+        Binding(
+            get: { store.pendingDecision },
+            set: { value in
+                if value == nil {
+                    store.cancelPendingDecision()
+                }
+            }
+        )
     }
 
     private var currentSection: AppSection {
@@ -58,6 +84,8 @@ struct ContentView: View {
             WorkstreamsView(store: store)
         case .brief:
             ExecutiveBriefView(store: store)
+        case .history:
+            AuditHistoryView(store: store)
         case .connectors:
             ConnectorsView()
         }
