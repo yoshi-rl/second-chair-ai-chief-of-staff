@@ -11,6 +11,7 @@ struct SecondChairApp: App {
         WindowGroup("Second Chair", id: "main") {
             ContentView(store: store)
                 .frame(minWidth: 920, minHeight: 640)
+                .preferredColorScheme(.light)
         }
         .defaultSize(width: 1180, height: 760)
         .commands {
