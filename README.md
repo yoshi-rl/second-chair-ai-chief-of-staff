@@ -14,6 +14,10 @@ The SwiftUI app includes:
 
 The current build uses local sample data. It does not send messages, launch ads, update marketplaces, move money, or mutate live CRM data.
 
+### Design language
+
+The native app uses the **Executive Command Centre** palette: `#F7F7F5` workspace backgrounds, white cards, `#111111` primary text, deep forest `#1F5D4E` for actions, slate `#64748B` for supporting information, and emerald for success. Colour is deliberately sparse to keep the interface calm, premium, and high-trust.
+
 ### Run
 
 Requirements: macOS 14 or later and Swift 6.
