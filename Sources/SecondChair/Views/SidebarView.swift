@@ -5,29 +5,42 @@ struct SidebarView: View {
     let readyCount: Int
 
     var body: some View {
-        List(selection: $selection) {
+        List {
             Section("Workspace") {
                 ForEach(AppSection.allCases) { section in
-                    HStack(spacing: 10) {
-                        Image(systemName: section.systemImage)
-                            .foregroundStyle(.secondary)
-                            .frame(width: 16)
+                    Button {
+                        selection = section
+                    } label: {
+                        HStack(spacing: 10) {
+                            Image(systemName: section.systemImage)
+                                .foregroundStyle(selection == section ? Brand.accent : Brand.secondary)
+                                .frame(width: 16)
 
-                        Text(section.title)
-                            .lineLimit(1)
+                            Text(section.title)
+                                .fontWeight(selection == section ? .semibold : .regular)
+                                .foregroundStyle(Brand.primary)
+                                .lineLimit(1)
 
-                        Spacer()
+                            Spacer()
 
-                        if section == .approvals, readyCount > 0 {
-                            Text("\(readyCount)")
-                                .font(.caption2.weight(.semibold))
-                                .foregroundStyle(.white)
-                                .padding(.horizontal, 7)
-                                .padding(.vertical, 2)
-                                .background(Brand.coral, in: Capsule())
+                            if section == .approvals, readyCount > 0 {
+                                Text("\(readyCount)")
+                                    .font(.caption2.weight(.semibold))
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 7)
+                                    .padding(.vertical, 2)
+                                    .background(Brand.accent, in: Capsule())
+                            }
                         }
                     }
-                    .tag(section)
+                    .buttonStyle(.plain)
+                    .contentShape(Rectangle())
+                    .listRowBackground(
+                        selection == section
+                            ? Brand.accent.opacity(0.10)
+                            : Color.clear
+                    )
+                    .accessibilityAddTraits(selection == section ? .isSelected : [])
                 }
             }
         }
@@ -38,7 +51,7 @@ struct SidebarView: View {
                     .font(.caption.weight(.medium))
                 Text("No live actions are enabled.")
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Brand.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
